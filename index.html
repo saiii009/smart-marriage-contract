@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Contract</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to style.css -->
+</head>
+<body>
+    <h3>Marriage Status: <span id="marriageStatus"></span></h3>
+    <button onclick="initiateDivorce()">Initiate Divorce</button>
+
+    <input id="assetName" type="text" placeholder="Asset Name">
+    <input id="assetValue" type="number" placeholder="Asset Value">
+    <label><input id="isTokenized" type="checkbox"> Tokenized</label>
+    <button onclick="addAsset()">Add Asset</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
