@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="text" id="address" placeholder="Enter Ethereum Address" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p id="errorMessage" style="color:red;"></p>
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.14.0/dist/web3.min.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const address = document.getElementById('address').value;
+
+            // You would need to verify this address with your contract's data.
+            // For demonstration, we're just simulating a successful login.
+            if (address) {
+                localStorage.setItem('userAddress', address); // Save address to local storage
+                alert("Login successful!");
+                window.location.href = 'index.html'; // Redirect to main page
+            } else {
+                document.getElementById('errorMessage').innerText = 'Invalid address or user not registered!';
+            }
+        });
+    </script>
+</body>
+</html>

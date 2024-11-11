@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Contract DApp</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Redirect to login page if not logged in
+        if (!localStorage.getItem('userAddress')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Marriage Contract DApp</h1>
+
+        <!-- Wallet Section -->
+        <div>
+            <button onclick="connectWallet()">Connect Wallet</button>
+            <p id="walletAddress">Not connected</p>
+        </div>
+
+        <!-- Marriage Status Section -->
+        <div>
+            <h2>Marriage Status</h2>
+            <p id="marriageStatus">Loading...</p>
+            <button onclick="initiateDivorce()">Initiate Divorce</button>
+        </div>
+
+        <!-- Manage Assets Section -->
+        <div>
+            <h2>Manage Assets</h2>
+
+            <!-- Add Asset Form -->
+            <h3>Add Asset</h3>
+            <input type="text" id="assetName" placeholder="Asset Name">
+            <input type="number" id="assetValue" placeholder="Asset Value">
+            <label><input type="checkbox" id="isTokenized"> Tokenized</label>
+            <button onclick="addAsset()">Add Asset</button>
+
+            <!-- Transfer Asset Form -->
+            <h3>Transfer Asset</h3>
+            <input type="number" id="assetIndex" placeholder="Asset Index">
+            <input type="text" id="newOwnerAddress" placeholder="New Owner Address">
+            <button onclick="transferAsset()">Transfer Asset</button>
+
+            <!-- List Assets -->
+            <h3>List Assets</h3>
+            <button onclick="listAssets()">List All Assets</button>
+            <div id="assetList"></div>
+        </div>
+    </div>
+
+    <!-- Script Files -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.14.0/dist/web3.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Connect Wallet and Display Address
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                const web3 = new Web3(window.ethereum);
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const walletAddress = accounts[0];
+                    document.getElementById('walletAddress').innerText = walletAddress;
+
+                    // Store the wallet address in local storage for future sessions
+                    localStorage.setItem('userAddress', walletAddress);
+                } catch (error) {
+                    console.error("Wallet connection error:", error);
+                }
+            } else {
+                alert("Please install MetaMask to connect your wallet.");
+            }
+        }
+
+        // Check Login State and Set Wallet Address
+        window.addEventListener('load', () => {
+            const storedAddress = localStorage.getItem('userAddress');
+            if (storedAddress) {
+                document.getElementById('walletAddress').innerText = storedAddress;
+            } else {
+                document.getElementById('walletAddress').innerText = "Not connected";
+            }
+        });
+    </script>
+</body>
+</html>
