@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
 contract MarriageContract {
@@ -41,15 +40,22 @@ contract MarriageContract {
         ownerAssets[owner].push(assets.length - 1); // Store the index of the asset in the owner's list
         emit AssetAdded(name, value, isTokenized, owner);
     }
-    
-    // Function to initiate divorce
+
+    function transferAsset(uint256 assetIndex, address newOwner) public onlySpouses {
+        require(assetIndex < assets.length, "Invalid asset index");
+        Asset storage asset = assets[assetIndex];
+        require(asset.owner == msg.sender, "Not the asset owner");
+        asset.owner = newOwner;
+        ownerAssets[newOwner].push(assetIndex);
+        emit AssetTransferred(asset.name, newOwner);
+    }
+
     function initiateDivorce() public onlySpouses {
         require(isMarried, "Divorce already initiated or not married");
         isMarried = false;
         emit DivorceInitiated(msg.sender);
     }
-    
-    // Function to distribute assets using different methods
+
     function distributeAssets(string memory method) public onlySpouses {
         require(!isMarried, "Must initiate divorce before asset distribution");
 
