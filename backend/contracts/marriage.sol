@@ -64,6 +64,8 @@ contract MarriageContract {
             if (keccak256(bytes(assets[i].name)) == keccak256(bytes(assetName))) {
                 require(assets[i].owner == msg.sender, "Not the asset owner");
 
+                _removeAssetFromOwner(assets[i].owner, i);
+
                 assets[i].owner = newOwner;
                 ownerAssets[newOwner].push(i);
                 emit AssetTransferred(assets[i].name, newOwner);
@@ -74,13 +76,28 @@ contract MarriageContract {
         }
         require(assetFound, "Asset with the specified name not found");
     }
+    
+    function _removeAssetFromOwner(address owner, uint256 assetIndex) private {
+        uint256[] storage ownerAssetIndexes = ownerAssets[owner];
+        for (uint256 i = 0; i < ownerAssetIndexes.length; i++) {
+            if (ownerAssetIndexes[i] == assetIndex) {
+                ownerAssetIndexes[i] = ownerAssetIndexes[ownerAssetIndexes.length - 1];
+                ownerAssetIndexes.pop();
+                break;
+            }
+        }
+    }
 
     function transferAsset(uint256 assetIndex, address newOwner) public onlySpouses {
         require(assetIndex < assets.length, "Invalid asset index");
         Asset storage asset = assets[assetIndex];
         require(asset.owner == msg.sender, "Not the asset owner");
+
+        _removeAssetFromOwner(asset.owner, assetIndex);
+
         asset.owner = newOwner;
         ownerAssets[newOwner].push(assetIndex);
+    
         emit AssetTransferred(asset.name, newOwner);
     }
 

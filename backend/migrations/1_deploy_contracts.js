@@ -1,9 +1,17 @@
+require("dotenv").config();
 const MarriageContract = artifacts.require("MarriageContract");
 
 module.exports = function (deployer) {
-  const spouse1 = "0x0B02138fA1d1C0Ca2864198b89995DAdD6DFBA70";
-  const spouse2 = "0xfD6261F631aBf1D17492Be58859bfB1a5b7c85aF";
+  const spouse1 = process.env.SPOUSE_1;
+  const spouse2 = process.env.SPOUSE_2;
+
   deployer
     .deploy(MarriageContract, spouse1, spouse2)
-    .then(() => console.log("Contract deployed at:", MarriageContract.address));
+    .then(() =>
+      console.log(
+        "Marriage Contract deployed for:\n" + spouse1 + " & \n" + spouse2,
+        "\n\nat",
+        MarriageContract.address + "\n\n"
+      )
+    );
 };

@@ -1,153 +1,124 @@
-// script.js
 let web3;
 let contract;
-const contractAddress = "0xb91558B4afC3A6B56234c16248b5530D026d5A25";  // Replace with your contract's address from migration
-const abi = [{
-  inputs: [ [Object], [Object] ],
-  stateMutability: 'nonpayable',
-  type: 'constructor'
-},
-{
-  anonymous: false,
-  inputs: [ [Object], [Object], [Object], [Object] ],
-  name: 'AssetAdded',
-  type: 'event'
-},
-{
-  anonymous: false,
-  inputs: [ [Object], [Object] ],
-  name: 'AssetTransferred',
-  type: 'event'
-},
-{
-  anonymous: false,
-  inputs: [ [Object], [Object], [Object], [Object] ],
-  name: 'Divorce',
-  type: 'event'
-},
-{
-  anonymous: false,
-  inputs: [ [Object] ],
-  name: 'DivorceInitiated',
-  type: 'event'
-},
-{
-  anonymous: false,
-  inputs: [ [Object], [Object] ],
-  name: 'Marriage',
-  type: 'event'
-},
-{
-  inputs: [ [Object] ],
-  name: 'assets',
-  outputs: [ [Object], [Object], [Object], [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [],
-  name: 'isMarried',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [ [Object], [Object] ],
-  name: 'ownerAssets',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [],
-  name: 'spouse1',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [],
-  name: 'spouse2',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [ [Object], [Object], [Object], [Object] ],
-  name: 'addAsset',
-  outputs: [],
-  stateMutability: 'nonpayable',
-  type: 'function'
-},
-{
-  inputs: [],
-  name: 'initiateDivorce',
-  outputs: [],
-  stateMutability: 'nonpayable',
-  type: 'function'
-},
-{
-  inputs: [ [Object] ],
-  name: 'distributeAssets',
-  outputs: [],
-  stateMutability: 'nonpayable',
-  type: 'function'
-},
-{
-  inputs: [ [Object] ],
-  name: 'getAssetsByOwner',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [ [Object] ],
-  name: 'getAssetDetails',
-  outputs: [ [Object], [Object], [Object], [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-},
-{
-  inputs: [],
-  name: 'getAssetsCount',
-  outputs: [ [Object] ],
-  stateMutability: 'view',
-  type: 'function',
-  constant: true
-}]; // Copy the ABI from the Truffle build JSON file
+let currentSpouseAccount;
 
 async function initWeb3() {
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
-    } else {
-        web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-    }
-    const accounts = await web3.eth.getAccounts();
-    contract = new web3.eth.Contract(abi, contractAddress, { from: accounts[0] });
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+  } else {
+    alert("Please install MetaMask to use this application.");
+    return;
+  }
+  currentSpouseAccount = localStorage.getItem("currentSpouseAccount");
+
+  document.getElementById("walletAddress").innerText = currentSpouseAccount;
+  document.querySelectorAll("input, button").forEach((element) => {
+    element.disabled = false;
+  });
+  document.getElementById("maindiv").classList.add("opacity-100");
+
+  try {
+    const response = await fetch(
+      "../backend/build/contracts/MarriageContract.json"
+    );
+    const MarriageContract = await response.json();
+    const { abi, networks } = MarriageContract;
+
+    const networkKey = Object.keys(networks)[0];
+
+    contract = new web3.eth.Contract(abi, networks[networkKey].address, {
+      from: currentSpouseAccount,
+    });
+
+    document.getElementById("connectWalletButton").style.backgroundColor =
+      "gray";
+    document.getElementById("connectWalletButton").disabled = true;
+
+    getMarriageStatus();
+  } catch (err) {
+    console.error("Error loading contract ABI:", err);
+  }
 }
 
-// Example functions to interact with the contract
 async function getMarriageStatus() {
+  try {
     const status = await contract.methods.isMarried().call();
-    document.getElementById("marriageStatus").innerText = status ? "Married" : "Divorce Initiated";
+    document.getElementById("marriageStatus").innerText = status
+      ? "Married"
+      : "Divorce Initiated";
+
+    if (!status) {
+      document.getElementById("initiateDivorceButton").style.backgroundColor =
+        "gray";
+    }
+  } catch (err) {
+    console.error("Error fetching marriage status:", err);
+  }
 }
 
 async function initiateDivorce() {
+  try {
     await contract.methods.initiateDivorce().send();
-    getMarriageStatus();  // Refresh the status on the UI
+    getMarriageStatus();
+  } catch (err) {
+    console.error("Error initiating divorce:", err);
+  }
 }
 
-async function addAsset(name, value, isTokenized) {
-    await contract.methods.addAsset(name, value, isTokenized, web3.eth.defaultAccount).send();
-    alert("Asset added successfully");
+async function addAsset() {
+  const name = document.getElementById("assetName").value;
+  const value = document.getElementById("assetValue").value;
+
+  const owner = currentSpouseAccount;
+
+  try {
+    await contract.methods.addAsset(name, value, false, owner).send();
+    alert("Asset added successfully!");
+  } catch (err) {
+    console.error("Error adding asset:", err);
+  }
 }
 
-window.onload = initWeb3;
+async function transferAsset() {
+  const assetName = document.getElementById("assetName").value;
+  const newOwnerAddress = document.getElementById("newOwnerAddress").value;
+
+  try {
+    await contract.methods
+      .transferAssetByName(assetName, newOwnerAddress)
+      .send();
+    alert("Asset transferred successfully!");
+  } catch (err) {
+    console.error("Error transferring asset:", err);
+  }
+}
+
+async function listAssets() {
+  try {
+    const info = await contract.methods
+      .listAssets()
+      .call({ from: currentSpouseAccount });
+
+    const assetNames = info.assetNames;
+    const assetValues = info.assetValues;
+
+    const assetListContainer = document.getElementById("assetList");
+    assetListContainer.innerHTML = "";
+
+    if (assetNames.length === 0) {
+      assetListContainer.innerHTML =
+        "<p>No assets found for the current account.</p>";
+      return;
+    }
+
+    assetNames.forEach((name, index) => {
+      const listItem = document.createElement("div");
+      listItem.innerHTML = `Asset Name: ${name}, Value: ${assetValues[index]} ETH`;
+      assetListContainer.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error("Error fetching assets:", error);
+    alert("An error occurred while fetching the assets.");
+  }
+}
