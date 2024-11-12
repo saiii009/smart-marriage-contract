@@ -18,7 +18,9 @@
       <div>
         <h2>Marriage Status</h2>
         <p id="marriageStatus">Loading...</p>
-        <button onclick="initiateDivorce()">Initiate Divorce</button>
+        <button onclick="initiateDivorce()" id="initiateDivorceButton">
+          Initiate Divorce
+        </button>
       </div>
       <div>
         <h2>Manage Assets</h2>
@@ -28,7 +30,7 @@
         <label><input type="checkbox" id="isTokenized" /> Tokenized</label>
         <button onclick="addAsset()">Add Asset</button>
         <h3>Transfer Asset</h3>
-        <input type="number" id="assetIndex" placeholder="Asset Index" />
+        <input type="text" id="assetName" placeholder="Asset Name" />
         <input
           type="text"
           id="newOwnerAddress"

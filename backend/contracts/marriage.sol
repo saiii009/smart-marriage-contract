@@ -33,12 +33,46 @@ contract MarriageContract {
         emit Marriage(spouse1, spouse2);
     }
 
-    function addAsset(string memory name, uint256 value, bool isTokenized, address owner) public onlySpouses {
+    function addAsset(string memory name, uint256 value, bool isTokenized, address owner) public onlySpouses returns (uint256) {
         require(isMarried, "Cannot add assets after divorce initiation");
         Asset memory newAsset = Asset(name, value, isTokenized, owner);
         assets.push(newAsset);
         ownerAssets[owner].push(assets.length - 1); // Store the index of the asset in the owner's list
         emit AssetAdded(name, value, isTokenized, owner);
+        return assets.length - 1; // Return the index of the newly added asset
+    }
+
+    function listAssets() public view returns (string[] memory assetNames, uint256[] memory assetValues) {
+        uint256[] memory ownedAssetIndexes = ownerAssets[msg.sender];
+        uint256 count = ownedAssetIndexes.length;
+    
+        string[] memory names = new string[](count);
+        uint256[] memory values = new uint256[](count);
+    
+        for (uint256 i = 0; i < count; i++) {
+            uint256 assetIndex = ownedAssetIndexes[i];
+            names[i] = assets[assetIndex].name;
+            values[i] = assets[assetIndex].value;
+        }
+    
+        return (names, values);
+    }
+
+    function transferAssetByName(string memory assetName, address newOwner) public onlySpouses {
+        bool assetFound = false;
+        for (uint256 i = 0; i < assets.length; i++) {
+            if (keccak256(bytes(assets[i].name)) == keccak256(bytes(assetName))) {
+                require(assets[i].owner == msg.sender, "Not the asset owner");
+
+                assets[i].owner = newOwner;
+                ownerAssets[newOwner].push(i);
+                emit AssetTransferred(assets[i].name, newOwner);
+
+                assetFound = true;
+                break;
+            }
+        }
+        require(assetFound, "Asset with the specified name not found");
     }
 
     function transferAsset(uint256 assetIndex, address newOwner) public onlySpouses {
