@@ -1,0 +1,19 @@
+{
+  "name": "marriagecontractapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "create_accounts": "ganache",
+    "make_contract": "truffle migrate --network development --reset"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ganache": "^7.9.2",
+    "truffle": "^5.11.5",
+    "web3": "^4.14.0"
+  }
+}
