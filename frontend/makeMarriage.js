@@ -9,7 +9,6 @@ async function createMarriage() {
   }
 
   document.getElementById("errorMessage").innerText = "";
-  document.getElementById("loadingMessage").classList.remove("hidden");
   document.getElementById("submitButton").innerText = "Processing...";
   document.getElementById("submitButton").disabled = true;
 
@@ -32,9 +31,12 @@ async function createMarriage() {
       error.message || "Error creating marriage contract. Please try again.";
     console.error(error);
   } finally {
-    document.getElementById("loadingMessage").classList.add("hidden");
     alert("Marriage contract created successfully!");
     document.getElementById("submitButton").innerText = "Create Contract";
     document.getElementById("submitButton").disabled = false;
   }
+}
+
+function goToLogin() {
+  window.location.href = "index.html";
 }
