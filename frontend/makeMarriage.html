@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marriage Contract DApp</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-gray-900 text-gray-200 min-h-screen flex items-center justify-center"
+  >
+    <div
+      id="marriageSection"
+      class="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-xl"
+    >
+      <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">
+        Create Marriage Contract
+      </h1>
+      <input
+        type="text"
+        id="spouse1Address"
+        placeholder="Enter Spouse 1 Ethereum Address"
+        class="w-full px-4 py-2 mb-4 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500"
+        required
+      />
+      <input
+        type="text"
+        id="spouse2Address"
+        placeholder="Enter Spouse 2 Ethereum Address"
+        class="w-full px-4 py-2 mb-4 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500"
+        required
+      />
+      <div
+        id="submitButton"
+        onclick="createMarriage(event)"
+        class="flex justify-center px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
+      >
+        Create Contract
+      </div>
+      <p id="errorMessage" class="mt-4 text-red-500 text-sm"></p>
+    </div>
+    <script src="makeMarriage.js"></script>
+  </body>
+</html>

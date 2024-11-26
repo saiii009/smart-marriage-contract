@@ -4,15 +4,18 @@
   "main": "index.js",
   "scripts": {
     "create_accounts": "ganache",
-    "make_contract": "truffle migrate --network development --reset"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ganache": "^7.9.2",
+    "nodemon": "^3.1.7",
     "truffle": "^5.11.5",
     "web3": "^4.14.0"
   }
