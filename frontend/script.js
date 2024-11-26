@@ -13,7 +13,7 @@ async function initWeb3() {
   currentSpouseAccount = localStorage.getItem("currentSpouseAccount");
 
   document.getElementById("walletAddress").innerText = currentSpouseAccount;
-  document.querySelectorAll("input, button").forEach((element) => {
+  document.querySelectorAll("input, button, select").forEach((element) => {
     element.disabled = false;
   });
   document.getElementById("maindiv").classList.add("opacity-100");
@@ -120,5 +120,24 @@ async function listAssets() {
   } catch (error) {
     console.error("Error fetching assets:", error);
     alert("An error occurred while fetching the assets.");
+  }
+}
+
+async function distributeAssets() {
+  const method = document.getElementById("distributionMethod").value;
+
+  if (!method) {
+    alert("Please select a distribution method.");
+    return;
+  }
+
+  try {
+    await contract.methods.distributeAssets(method).send();
+    alert("Assets distributed successfully!");
+
+    listAssets();
+  } catch (err) {
+    console.error("Error distributing assets:", err);
+    alert("An error occurred while distributing assets.");
   }
 }

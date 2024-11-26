@@ -32240,129 +32240,15 @@
     "version": "0.8.21+commit.d9974bed.Emscripten.clang"
   },
   "networks": {
-    "1731431718534": {
-      "events": {
-        "0xb69ee633e44efc83a2a42766fd6dc214c73784d0f7c51020cc6a59f20e19ba26": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "bool",
-              "name": "isTokenized",
-              "type": "bool"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            }
-          ],
-          "name": "AssetAdded",
-          "type": "event"
-        },
-        "0xeb5476790d1d39c8b19dd28e329f20439f6b16bc912c68590eab27cbd4466b2c": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "AssetTransferred",
-          "type": "event"
-        },
-        "0xd3fe828503e2482f1db99eb8630720cbc4a509c71046320c3df868124ca24091": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spouse1",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spouse2",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "spouse1Share",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "spouse2Share",
-              "type": "uint256"
-            }
-          ],
-          "name": "Divorce",
-          "type": "event"
-        },
-        "0xd7cd4e5586cc81696a25f9f8984878b2ba504039d968729d346d89826ce88870": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spouse",
-              "type": "address"
-            }
-          ],
-          "name": "DivorceInitiated",
-          "type": "event"
-        },
-        "0x1f06687311f13f3dbfbf7d72190a1d600769ed13ca058bce01da65315016a2b4": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spouse1",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spouse2",
-              "type": "address"
-            }
-          ],
-          "name": "Marriage",
-          "type": "event"
-        }
-      },
+    "1732603045811": {
+      "events": {},
       "links": {},
-      "address": "0x02a73B70d1b641b22257dF1C3d7e0F0D7CA0640E",
-      "transactionHash": "0xd5d0183a932c1a4e70667ae57f5d7c07d4db4c24d049232c327f1b5aefd97cf3"
+      "address": "0xFCF6b5C0a85aaC036F9a86BB51b8673F475E81eF",
+      "transactionHash": "0x851263059e8f7372cfcc0b07bc77b4a679ed20d03f25afad6a3161d9ba0fe6f9"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-11-12T17:17:55.261Z",
+  "updatedAt": "2024-11-26T07:44:00.068Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
