@@ -26,7 +26,7 @@ To begin, clone the project repository to your local machine by running the foll
 
 ```bash
 git clone https://github.com/yourusername/MarriageContractDApp.git
-cd MarriageContractDApp
+cd smart-marriage-contract
 ```
 
 
