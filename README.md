@@ -18,6 +18,8 @@ This project is a decentralized application (DApp) for managing a marriage contr
 
 4. **MetaMask** - Install the MetaMask extension in your browser.
 
+5. **Soliditiy** - Programming language in order to call major functions in the smart contract .
+
 
 ## Getting Started
 
